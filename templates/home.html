@@ -2,12 +2,24 @@
 
 {% block home %}
 
-{{ title }}
+<div class="container">
+    <div class="row">
+        <div class="cpl-6 mx-auto">
+            {{ title }}
 
-{{ user }}
+            {{ request.path }}
 
-{{ user.is_authenticated }}
+            {{ request.user }}
 
+            {{ user }}
+
+            {{ user.is_authenticated }}
+            {% for a in my_list %}
+                <li>{{ a }}</li>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 
