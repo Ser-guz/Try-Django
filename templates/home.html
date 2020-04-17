@@ -1,25 +1,13 @@
 {% extends 'base.html' %}
 
-{% block home %}
+{% block content %}
 
-<div class="container">
-    <div class="row">
-        <div class="cpl-6 mx-auto">
-            {{ title }}
+<h1>{{ title }}</h1>
 
-            {{ request.path }}
+{% for a in blog_list %}
+    {% include 'blog/list-inline.html' with object=a %}
+{% endfor %}
 
-            {{ request.user }}
-
-            {{ user }}
-
-            {{ user.is_authenticated }}
-            {% for a in my_list %}
-                <li>{{ a }}</li>
-            {% endfor %}
-        </div>
-    </div>
-</div>
 {% endblock %}
 
 

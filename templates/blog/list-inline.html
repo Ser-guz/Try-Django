@@ -1,14 +1,8 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
-
-
-<div class="container">
-    <div class="row">
-        <div class="cpl-6 mx-auto">
-            <h1>{{ object.title }}</h1>
-            <p>{{ object.content }}</p>
+<div class="col-12 col-md-10 ms-auto">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><a href={{ object.get_absolute_url }}>{{ object.title }}</a></h5>
+            <p class="card-text">{{ object.content|linebreaks|truncatewords:100 }}</p>
             <a
                 href="{{ object.get_edit_url }}"
                 class="btn btn-primary btn-sm active"
@@ -24,5 +18,3 @@
         </div>
     </div>
 </div>
-
-{% endblock %}

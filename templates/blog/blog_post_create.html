@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="cpl-6 mx-auto">
+            <div>
+                <form action="" method="POST">{% csrf_token %}
+                  {{ form.as_p }}
+                  <div class="text-right">
+                    <button type="submit" class="btn btn-primary btn-lg btn-check">Опубликовать</button>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

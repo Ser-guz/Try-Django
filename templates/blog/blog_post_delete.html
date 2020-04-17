@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="cpl-6 mx-auto">
+            <div>
+                <h2>Вы уверены, что хотите удалить следующую публицаю:</h2>
+                <p>"{{ object.title }}"</p>
+                <form action="" method="POST">{% csrf_token %}
+                  <div class="text-left">
+                    <button type="submit" class="btn btn-danger btn-sm btn-check">Да, удалить</button>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
