@@ -5,6 +5,7 @@ from .models import BlogPost
 from django.http import Http404
 from .forms import CreatePostModelForm
 from django.views.generic import CreateView
+from django.utils import timezone
 
 
 def blog_post_detail_page(request, slug):
@@ -48,7 +49,10 @@ def blog_post_create_view(request):
 
 
 def blog_post_list_view(request):
-    qs = BlogPost.objects.all()
+    # qs = BlogPost.objects.all()
+    # now = timezone.now()
+    # qs = BlogPost.objects.filter(publish_date__lte=now)
+    qs = BlogPost.objects.all().published()
     # qs = BlogPost.objects.filter(title__icontains="Философия")
     template_name = "blog/blog_post_list.html"
     context = {"object_list": qs}
