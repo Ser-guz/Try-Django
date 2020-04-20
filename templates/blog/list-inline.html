@@ -1,8 +1,21 @@
 <div class="col-12 col-md-10 ms-auto">
-    <div class="card">
+    <div class="card {% if not object.publish_date %} border border-warning text-dark {% endif %}">
         <div class="card-body">
+            {% if object.image %}
+                <img src="{{ object.image.url }}" class="card-img-top" />
+            {% endif %}
             <h5 class="card-title"><a href={{ object.get_absolute_url }}>{{ object.title }}</a></h5>
+            <small class="text-muted">{{ object.publish_date }}</small>
             <p class="card-text">{{ object.content|linebreaks|truncatewords:100 }}</p>
+
+            {% if not object.publish_date %}
+                <a
+                    href="{{ object.get_edit_url }}"
+                    class="btn btn-warning text-light btn-sm active"
+                    role="button"
+                    aria-pressed="true"
+                >Черновик</a>
+            {% endif %}
             <a
                 href="{{ object.get_edit_url }}"
                 class="btn btn-primary btn-sm active"

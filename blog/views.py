@@ -23,7 +23,7 @@ def blog_post_detail_page(request, slug):
 # @login_required
 @staff_member_required
 def blog_post_create_view(request):
-    form = CreatePostModelForm(request.POST or None)
+    form = CreatePostModelForm(request.POST or None, request.FILES or None)
     template_name = "blog/blog_post_create.html"
     if form.is_valid():
         # obj = BlogPost.objects.create(**form.cleaned_data)
@@ -53,6 +53,9 @@ def blog_post_list_view(request):
     # now = timezone.now()
     # qs = BlogPost.objects.filter(publish_date__lte=now)
     qs = BlogPost.objects.all().published()
+    if request.user.is_authenticated:
+        my_qs = BlogPost.objects.filter(user=request.user)
+        qs = (qs | my_qs).distinct()
     # qs = BlogPost.objects.filter(title__icontains="Философия")
     template_name = "blog/blog_post_list.html"
     context = {"object_list": qs}
