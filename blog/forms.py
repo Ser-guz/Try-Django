@@ -13,12 +13,12 @@ class CreatePostModelForm(forms.ModelForm):
         model = BlogPost
         fields = ['title', 'image', 'slug', 'content', 'publish_date']
 
-    def clean_title(self, *args, **kwargs):
-        instance = self.instance
-        title = self.cleaned_data.get('title')
-        qs = BlogPost.objects.filter(title__iexact=title) # iexact -> нечувствительность к регистру заголовка
-        if instance is not None:
-            qs = qs.exclude(pk=instance.pk)
-        if qs.exists():
-            raise forms.ValidationError("Этот заголовок уже используется. Выберите другой.")
-        return title
+    # def clean_title(self, *args, **kwargs):
+    #     instance = self.instance
+    #     title = self.cleaned_data.get('title')
+    #     qs = BlogPost.objects.filter(title__iexact=title) # iexact -> нечувствительность к регистру заголовка
+    #     if instance is not None:
+    #         qs = qs.exclude(pk=instance.pk)
+    #     if qs.exists():
+    #         raise forms.ValidationError("Этот заголовок уже используется. Выберите другой.")
+    #     return title

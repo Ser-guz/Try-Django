@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import BlogPost
 from django.http import Http404
 from .forms import CreatePostModelForm
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from django.utils import timezone
 
 
@@ -40,27 +40,47 @@ def blog_post_create_view(request):
 
 
 # # Почему-то вызывается ошибка "type object 'CreatePostForm' has no attribute '_meta' "
-# class BlogPostCreate (CreateView):
-#     model = BlogPost
-#     form_class = CreatePostModelForm
-#     # form = CreatePostModelForm(request.POST or None)
-#     template_name = "blog/blog_post_create.html"
-#     # fields = ['title', 'slug', 'content']
+class BlogPostCreate (CreateView):
+    # model = BlogPost
+    queryset = BlogPost.objects.all()
+    form_class = CreatePostModelForm # нельзя использовать с fields
+    template_name = "blog/blog_post_create.html"
+    # fields = ['title', 'image', 'slug', 'content', 'publish_date']
+
+    def form_valid(self, form):
+        print(form.data)
+        return super().form_valid(form)
 
 
-def blog_post_list_view(request):
-    # qs = BlogPost.objects.all()
-    # now = timezone.now()
-    # qs = BlogPost.objects.filter(publish_date__lte=now)
-    qs = BlogPost.objects.all().published()
-    if request.user.is_authenticated:
-        my_qs = BlogPost.objects.filter(user=request.user)
-        qs = (qs | my_qs).distinct()
-    # qs = BlogPost.objects.filter(title__icontains="Философия")
-    template_name = "blog/blog_post_list.html"
-    context = {"object_list": qs}
-    return render(request, template_name, context)
 
+
+# def blog_post_list_view(request):
+#     # qs = BlogPost.objects.all()
+#     # now = timezone.now()
+#     # qs = BlogPost.objects.filter(publish_date__lte=now)
+#     qs = BlogPost.objects.all().published()
+#     # Если пользователь залогинился, то для него отфитровываются объекты (публикации),
+#     # если нет, то Django просто переводит на страницу ввода логина и пароля.
+#     if request.user.is_authenticated:
+#         my_qs = BlogPost.objects.filter(user=request.user)
+#         qs = (qs | my_qs).distinct()
+#     # qs = BlogPost.objects.filter(title__icontains="Философия")
+#     template_name = "blog/blog_post_list.html"
+#     context = {"object_list": qs}
+#     return render(request, template_name, context)
+
+
+class BlogPostListView(ListView):
+    model = BlogPost
+
+    def get(self, request, *args, **kwargs):
+        template_name = 'blog/blog_post_list.html'
+        qs = BlogPost.objects.all().published()
+        print(request.user)
+        if request.user.is_authenticated:
+            my_qs = BlogPost.objects.filter(user=request.user)
+            qs = (qs | my_qs).distinct()
+        return render(request, template_name, {"object_list": qs})
 
 def blog_post_detail_view(request, slug):
     obj = get_object_or_404(BlogPost, slug=slug)
