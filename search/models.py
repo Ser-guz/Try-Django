@@ -12,4 +12,3 @@ class SearchQuery(models.Model):
         ordering = ['-timestamp']
         verbose_name = 'Запрос'
         verbose_name_plural = 'Запросы'
-
