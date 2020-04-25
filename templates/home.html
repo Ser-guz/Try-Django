@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<h1>{{ title }}</h1>
+{#<h1>{{ title }}</h1>#}
+<h1>Добро пожаловать в Try Django</h1>
 
 {% for a in blog_list %}
     {% include 'blog/list-inline.html' with object=a %}
